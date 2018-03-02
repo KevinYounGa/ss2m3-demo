@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee           http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+    <display-name>s2sm 3.0 Web Application</display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+    <!--siteMesh 控制器 -->
+    <filter>
+        <filter-name>sitemesh</filter-name>
+        <filter-class>org.sitemesh.config.ConfigurableSiteMeshFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>sitemesh</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- spring 装载xml文件-->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring/applicationContext-*.xml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>spring.liveBeansView.mbeanDomain</param-name>
+        <param-value>dev</param-value>
+    </context-param>
+    <filter>
+        <filter-name>characterEncodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>characterEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+        <filter-name>struts2</filter-name>
+        <filter-class>org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>struts2</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+        <!--druid 监控 -->
+        <servlet>
+            <!-- sql 栏显示 -->
+            <servlet-name>DruidStatView</servlet-name>
+            <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+            <init-param>
+                <!-- 允许清空统计数据 -->
+                <param-name>resetEnable</param-name>
+                <param-value>true</param-value>
+            </init-param>
+            <init-param>
+                <!-- 用户名 -->
+                <param-name>loginUsername</param-name>
+                <param-value>druid</param-value>
+            </init-param>
+            <init-param>
+                <!-- 密码 -->
+                <param-name>loginPassword</param-name>
+                <param-value>druid</param-value>
+            </init-param>
+        </servlet>
+        <servlet-mapping>
+            <servlet-name>DruidStatView</servlet-name>
+            <url-pattern>/druid/*</url-pattern>
+        </servlet-mapping>
+    <!--日志环境配置-->
+    <!--公用环境配置:session-config,error_page,404,500-->
+
+</web-app>

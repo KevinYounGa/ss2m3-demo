@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <constant name="struts.action.excludePattern" value="/static/.*?"/>
+    <!-- 请求参数的编码方式 -->
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+    <!-- 指定被struts2处理的请求后缀类型。多个用逗号隔开 -->
+    <!-- <constant name="struts.action.extension" value="action,do,htm"/> -->
+    <!-- 当struts.xml改动后，是否重新加载。默认值为false(生产环境下使用),开发阶段最好打开  -->
+    <constant name="struts.configuration.xml.reload" value="true"/>
+    <!-- 是否使用struts的开发模式。开发模式会有更多的调试信息。默认值为false(生产环境下使用),开发阶段最好打开  -->
+    <constant name="struts.devMode" value="true"/>
+    <!-- 设置浏览器是否缓存静态内容。默认值为true(生产环境下使用),开发阶段最好关闭  -->
+    <constant name="struts.serve.static.browserCache" value="false"/>
+    <!-- 是否开启动态方法调用 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    <package name="test" namespace="/test" extends="struts-default" strict-method-invocation="false">
+        <interceptors>
+            <interceptor name="myinterceptor"
+                         class="daidao.s2sm.interceptor.MyInterceptor" />
+        </interceptors>
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.NullPointerException"
+                               result="error" />
+        </global-exception-mappings>
+
+        <action name="database" class="testAction" method="testDatabase">
+            <result name="success">
+                /WEB-INF/views/testDatabase.jsp
+            </result>
+        </action>
+        <action name="database1" class="testAction" method="testDatabase1">
+            <interceptor-ref name="timer" />
+            <result name="success">
+                /WEB-INF/views/testDatabase.jsp
+            </result>
+        </action>
+        <action name="index" class="testAction" method="index">
+            <result name="success">
+                /WEB-INF/views/index.jsp
+            </result>
+        </action>
+        <!-- test sitemesh-->
+        <action name="nositemesh" class="testAction" method="nositemesh">
+            <result name="success">
+                /WEB-INF/views/nositemesh.jsp
+            </result>
+        </action>
+        <!-- test cache -->
+        <action name="cache" class="testAction" method="testCache">
+            <result name="success">
+                /WEB-INF/views/cacheTest.jsp
+            </result>
+        </action>
+
+        <action name="hello"
+                class="daidao.s2sm.web.HelloWorldAction"
+                method="execute">
+            <interceptor-ref name="params"/>
+            <interceptor-ref name="myinterceptor" />
+            <result name="success">/WEB-INF/views/HelloWorld.jsp</result>
+        </action>
+
+        <action name="empinfo"
+                class="daidao.s2sm.web.EmployeeAction"
+                method="execute">
+            <result name="input">/index.jsp</result>
+            <result name="success">/success.jsp</result>
+        </action>
+
+    </package>
+</struts>
